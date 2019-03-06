@@ -1,3 +1,7 @@
 h1 {
-    color:red;
+    color: rgb(255, 0, 157);
+    font-family: Arial, Helvetica, sans-serif;
+}
+p {
+    color: purple;
 }

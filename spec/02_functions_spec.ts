@@ -1,3 +1,5 @@
+//import { formatName as fn, PI } from "../src/formatters";
+import * as formatters from "../src/formatters";
 describe('functions', () => {
     describe('function literals', () => {
         it('has a couple of kinds', () => {
@@ -48,5 +50,15 @@ describe('functions', () => {
 
         })
     });
-});
+    describe('higher order functions', () => {
+        /*
+        1. takes one or more functions as arguments (i.e. procedural parameters), 
+        2. (and/or) returns a functions as its result.
+        */
+        it('takes a function as an argument', () => {
+            const answer = formatters.formatName('Han', 'Solo');
+            expect(answer).toBe('Solo, Han');
+            expect(formatters.PI).toBe(3.1415);
+        });
+    });
 });

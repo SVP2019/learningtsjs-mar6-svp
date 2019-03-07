@@ -59,6 +59,102 @@ describe('functions', () => {
             const answer = formatters.formatName('Han', 'Solo');
             expect(answer).toBe('Solo, Han');
             expect(formatters.PI).toBe(3.1415);
+
+            expect(formatters.formatName('Han', 'Solo', (x) => x.toUpperCase())).toBe('SOLO, HAN');
+            const wrapInStars = formatters.wrap('***');
+            expect(wrapInStars('Tacos')).toBe('***Tacos***');
+            expect(formatters.formatName('Han', 'Solo', wrapInStars)).toBe('***Solo, Han***');
+
+            const wrapInCarots = formatters.wrap('^^^');
+            expect(formatters.formatName('Han', 'Solo', wrapInCarots)).toBe('^^^Solo, Han^^^');
+        });
+    });
+    describe('array methods', () => {
+        const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        it('taking a look at every member of an array', () => {
+            numbers.forEach((x) => console.log(x));
+        });
+        describe('methods that return new arrays', () => {
+            it('has a filter', () => {
+                //const evens = numbers.filter(n => n % 2 === 0); <= same as below
+                function isEven(n: number): boolean {
+                    return n % 2 === 0;
+                }
+                const evens = numbers.filter(isEven);
+                expect(evens).toEqual([2, 4, 6, 8]);
+                expect(numbers).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+            });
+            it('map', () => {
+                const doubled = numbers.map(n => n * 2);
+                expect(doubled).toEqual([2, 4, 6, 8, 10, 12, 14, 16, 18]);
+            });
+            it('do a practice', () => {
+                interface Vehicle {
+                    vin: string;
+                    makeAndModel: string;
+                    mileage: number;
+                }
+                const vehicles: Vehicle[] = [
+                    { vin: '9999', makeAndModel: 'Chevy Tahoe', mileage: 182000 },
+                    { vin: 'aka92', makeAndModel: 'Toyota Prius', mileage: 89999 },
+                    { vin: 'kduwi', makeAndModel: 'Ford Explorer', mileage: 99998 }
+                ];
+
+                const lowMileageVehicles = vehicles //Vehilces[{},{},{}]
+                    .filter(v => v.mileage < 100_000) //Vehicles[{},{}]
+                    .map(v => v.makeAndModel); //String{} ["",""]
+
+                expect(lowMileageVehicles).toEqual(['Toyota Prius', 'Ford Explorer']);
+
+
+            });
+            describe('methods that produce a single (scalar) value', () => {
+                it('hasmethods that check the membership of an array', () => {
+                    expect(numbers.some(n => n > 8)).toBe(true);
+                    expect(numbers.every(n => n % 2 === 0)).toBe(false);
+                });
+                it('has reduce', () => {
+                    expect(numbers.reduce((s, n) => s + n)).toBe(45);
+                    expect(numbers.reduce((s, n) => s + n, 100)).toBe(145);
+                });
+            });
+        });
+        describe('a demo', () => {
+            it('using reduce for something "real"', () => {
+                interface Vehicle {
+                    vin: string;
+                    makeAndModel: string;
+                    mileage: number;
+                }
+                const vehicles: Vehicle[] = [
+                    { vin: '9999', makeAndModel: 'Chevy Tahoe', mileage: 182000 },
+                    { vin: 'aka92', makeAndModel: 'Toyota Prius', mileage: 89999 },
+                    { vin: 'kduwi', makeAndModel: 'Ford Explorer', mileage: 99998 }
+                ];
+                interface HighestMileageVEhicle {
+                    vin: string;
+                    mileage: number;
+                }
+                const seed: HighestMileageVEhicle = {
+                    vin: null,
+                    mileage: -1
+                };
+                const answer = vehicles.reduce((p, n) => {
+                    if (n.mileage > p.mileage) {
+                        return {
+                            vin: n.vin,
+                            mileage: n.mileage
+                        };
+                    } else {
+                        return p;
+                    }
+                }, seed);
+                expect(answer).toEqual({
+                    vin: '9999',
+                    mileage: 182000
+                })
+            });
         });
     });
 });
